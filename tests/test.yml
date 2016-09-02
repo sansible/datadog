@@ -1,0 +1,16 @@
+---
+
+- name: Test Datadog role
+  hosts: all
+
+  roles:
+    - role: sansible.datadog
+
+  post_tasks:
+    - name: Datadog should be running
+      become: yes
+      shell: service datadog-agent status | grep "is running"
+      args:
+        warn: no
+      tags:
+        - assert

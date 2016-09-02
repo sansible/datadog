@@ -1,0 +1,21 @@
+---
+
+- name: Ensures Datadog PGP key is known to the server
+  become: yes
+  apt_key:
+    id: C7A7DA52
+    keyserver: keyserver.ubuntu.com
+    state: present
+
+- name: Add Datadog repo
+  become: yes
+  apt_repository:
+    repo: deb http://apt.datadoghq.com/ stable main
+    state: present
+    update_cache: yes
+
+- name: Install Agent
+  become: yes
+  apt:
+    name: datadog-agent
+    state: latest

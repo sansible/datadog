@@ -1,0 +1,37 @@
+---
+
+- name: Diasble and stop agent if not enabled
+  become: yes
+  service:
+    enabled: false
+    name: datadog-agent
+    state: stopped
+  when: not datadog.enabled
+
+- name: Configure agent
+  become: yes
+  template:
+    src: datadog.conf.j2
+    dest: /etc/dd-agent/datadog.conf
+  when: datadog.enabled
+  notify:
+    - restart datadog
+
+- name: Enable any integrations
+  become: yes
+  template:
+    src: "conf.d/{{ item.key }}.yaml.j2"
+    dest: "/etc/dd-agent/conf.d/{{ item.key }}.yaml"
+    owner: dd-agent
+  with_dict: "{{ datadog.integrations }}"
+  when: datadog.enabled
+  notify:
+    - restart datadog
+
+- name: Enable and start agent if enabled
+  become: yes
+  service:
+    enabled: true
+    name: datadog-agent
+    state: started
+  when: datadog.enabled

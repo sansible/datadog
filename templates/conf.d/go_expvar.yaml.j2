@@ -1,0 +1,10 @@
+---
+
+init_config:
+
+instances:
+  - expvar_url: {{ datadog.integrations.go_expvar.url | default('http://127.0.0.1:8081/debug/vars') }}
+    metrics:
+{% for metric in datadog.integrations.go_expvar.metrics | default( [] ) %}
+      - path: {{ metric }}
+{% endfor %}

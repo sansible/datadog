@@ -1,0 +1,6 @@
+---
+
+init_config:
+
+instances:
+  - nginx_status_url: {{ datadog.integrations.nginx.status_url | default('http://127.0.0.1/nginx_status') }}
