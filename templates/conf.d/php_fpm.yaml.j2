@@ -1,0 +1,4 @@
+init_config:
+
+instances:
+  - status_url: {{ datadog.integrations.php_fpm.url | default('http://127.0.0.1/status') }}

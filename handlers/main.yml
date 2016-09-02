@@ -1,0 +1,22 @@
+---
+
+- name: restart datadog
+  become: yes
+  service:
+    name: datadog-agent
+    state: restarted
+  when: datadog.enabled
+
+- name: stop datadog
+  become: yes
+  service:
+    name: datadog-agent
+    state: stopped
+  when: datadog.enabled
+
+- name: start datadog
+  become: yes
+  service:
+    name: datadog-agent
+    state: started
+  when: datadog.enabled

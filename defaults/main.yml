@@ -1,0 +1,9 @@
+---
+
+datadog:
+  api_key: changeme
+  dd_url: https://app.datadoghq.com
+  default_tags: [ ]
+  enabled: yes
+  integrations: { }
+  tags: [ ]

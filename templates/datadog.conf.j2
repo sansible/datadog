@@ -1,0 +1,8 @@
+[Main]
+dd_url: {{ datadog.dd_url }}
+api_key: {{ datadog.api_key }}
+use_mount: no
+tags: {{ (datadog.default_tags | list + datadog.tags | list) | join(',') }}
+hostname: {{ datadog.hostname | default(ansible_hostname) }}
+collect_ec2_tags: {{ datadog.collect_ec2_tags | default('no') }}
+collect_instance_metadata: {{ datadog.collect_instance_metadata | default('no') }}
