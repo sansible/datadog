@@ -19,3 +19,10 @@
   apt:
     name: datadog-agent
     state: latest
+
+- name: Stop and disable datadog
+  become: yes
+  service:
+    name: datadog-agent
+    enabled: no
+    state: stopped

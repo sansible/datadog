@@ -2,8 +2,10 @@
 
 datadog:
   api_key: changeme
+  autostart_agent: yes
   dd_url: https://app.datadoghq.com
   default_tags: [ ]
   enabled: yes
   integrations: { }
+  socket: "/opt/datadog-agent/run/datadog-supervisor.sock"
   tags: [ ]
