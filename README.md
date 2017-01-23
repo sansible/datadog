@@ -1,6 +1,6 @@
 # Datadog
 
-Master: [![Build Status](https://travis-ci.org/sansible/datadog.svg?branch=master)](https://travis-ci.org/sansible/datadog)  
+Master: [![Build Status](https://travis-ci.org/sansible/datadog.svg?branch=master)](https://travis-ci.org/sansible/datadog)
 Develop: [![Build Status](https://travis-ci.org/sansible/datadog.svg?branch=develop)](https://travis-ci.org/sansible/datadog)
 
 * [ansible.cfg](#ansible-cfg)
@@ -9,6 +9,10 @@ Develop: [![Build Status](https://travis-ci.org/sansible/datadog.svg?branch=deve
 * [Examples](#examples)
 
 This roles installs the Datadog agent.
+
+The agent service is intentionally disabled on bootup; during boot a machine will most likely
+consume a high amount of resources whilst the OS and all of it's services start which will trip any
+CPU or Memory usage alarms erroneously.
 
 
 
@@ -33,7 +37,7 @@ To install run `ansible-galaxy install sansible.datadog` or add this to your
 
 ```YAML
 - name: sansible.datadog
-  version: v1.0
+  version: v1.1
 ```
 
 and run `ansible-galaxy install -p ./roles -r roles.yml`
@@ -43,7 +47,7 @@ and run `ansible-galaxy install -p ./roles -r roles.yml`
 
 ## Tags
 
-This role uses one tag: **build** 
+This role uses one tag: **build**
 
 * `build` - Installs Datadog and all it's dependencies.
 * `configure` - Configures datadog and install integrations
@@ -78,6 +82,50 @@ Setup Datadog with some integrations and tags:
         tags:
           - some_app
           - role:some_app
+```
+
+You can disable the agent completely if desired, this can be used to build images
+that have DD installed with the option turn DD off in certain environments where
+monitoring is not needed (eg. dev or scratch environments):
+
+```YAML
+# Environment var file eg. vars/dev/vars.yml
+
+datadog:
+  enabled: no
+```
+
+```YAML
+- name: Install and configure Datadog
+  hosts: "somehost"
+
+  vars_files:
+    - vars/dev/vars.yml
+
+  roles:
+    - role: sansible.datadog
+```
+
+**Note** This behaviour requires hash_behaviour to be set to merge.
+
+By default this role will start the DD agent in the [tasks/configure.yml] task file,
+this behaviour can be disabled however if you wish to start the agent within
+another role:
+
+```YAML
+- name: Install and configure Datadog
+  hosts: "somehost"
+
+  vars_files:
+    - vars/dev/vars.yml
+
+  roles:
+    - role: sansible.datadog
+      datadog:
+        autostart_agent: no
+
+    # The task of this role will be be to start the DD agent service
+    role: my_service_role
 ```
 
 Using .default_tags to set global tags, these get blended with .tags:
