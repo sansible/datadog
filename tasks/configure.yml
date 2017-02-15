@@ -25,3 +25,24 @@
     name: datadog-agent
     state: started
   when: datadog.autostart_agent
+
+- name: Change Datadog Upstart Runlevel - Create Symlinks
+  become: yes
+  file:
+    src: "/etc/init.d/datadog-agent"
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    state: link
+  with_items:
+    - /etc/rc0.d/K05datadog-agent
+    - /etc/rc6.d/K05datadog-agent
+
+- name: Change Datadog Upstart Runlevel - Delete old defunct Symlinks
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /etc/rc0.d/K20datadog-agent
+    - /etc/rc6.d/K20datadog-agent
