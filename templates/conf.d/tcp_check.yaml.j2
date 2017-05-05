@@ -1,0 +1,17 @@
+---
+
+init_config:
+
+instances:
+{% for i in datadog.integrations.tcp_check %}
+
+  - name: {{ i.name }}
+    host: {{ i.endpoint }}
+    port: {{ i.port }}
+    timeout: {{ i.timeout | default(1) }}
+    collect_response_time: {{ i.collect_response_time | default('true') }}
+{% if i.min_collection_interval | default(false) %}
+    min_collection_interval: {{ i.min_collection_interval }}
+{% endif %}
+    skip_event: true
+{% endfor %}

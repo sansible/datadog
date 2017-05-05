@@ -55,6 +55,37 @@ This role uses one tag: **build**
 
 
 
+## Integrations
+
+The `datadog/templates/conf.d` directory contains the implemented integrations. The majority of them are self explanatory.
+
+#### TCP Check
+
+Sample data structure for TCP Check integration.
+
+```
+roles:
+  - role: sansible.datadog
+    datadog:
+      integrations:
+        tcp_check:
+          - endpoint: "my.domain.com"
+            name: "TCP Check for my.domain.com"
+            port: "443"
+          - endpoint: "your.domain.com"
+            name: "TCP Check for your.domain.com"
+            port: "80"
+            timeout: 2
+            collect_response_time: "false"
+            min_collection_interval: 60
+      tags:
+        - some_app
+        - role:some_app
+```
+
+
+
+
 ## Examples
 
 To install:
