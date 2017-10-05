@@ -4,7 +4,7 @@
   become: yes
   apt_key:
     id: C7A7DA52
-    keyserver: keyserver.ubuntu.com
+    keyserver: hkp://keyserver.ubuntu.com:80
     state: present
 
 - name: Add Datadog repo

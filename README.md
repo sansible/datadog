@@ -59,7 +59,27 @@ This role uses one tag: **build**
 
 The `datadog/templates/conf.d` directory contains the implemented integrations. The majority of them are self explanatory.
 
-#### TCP Check
+### Gunicorn
+
+For Gunicorn integration you need to supply a list of app names to be monitored,
+please see [https://docs.datadoghq.com/integrations/gunicorn/]() for more
+information on how to setup DataDog and Gunicorn.
+
+```
+roles:
+  - role: sansible.datadog
+    datadog:
+      integrations:
+        gunicorn:
+          app_names:
+            - my_app
+            - another_app
+      tags:
+        - my_app
+        - role:my_app
+```
+
+### TCP Check
 
 Sample data structure for TCP Check integration.
 
