@@ -5,12 +5,35 @@
 
   roles:
     - role: sansible.datadog
+      datadog:
+        tags:
+          - role:some_app
+        integrations:
+          elastic: { }
+          go_expvar:
+            metrics:
+              - NumGoroutine
+              - HTTPRequestPerSecond
+          gunicorn:
+            app_names:
+              - some_app
+          kafka: { }
+          php_fpm: { }
+          nginx: { }
+          network: { }
+          tcp_check:
+            - endpoint: "somehost.com"
+              name: "Dummy test"
+              port: "80"
+          zk: { }
 
   post_tasks:
     - name: Datadog should be running
       become: yes
-      shell: service datadog-agent status | grep "is running"
-      args:
-        warn: no
+      service:
+        name: datadog-agent
+        state: started
+      register: datadog_agent_start_check
+      failed_when: datadog_agent_start_check.changed
       tags:
         - assert

@@ -1,0 +1,11 @@
+---
+
+init_config:
+
+instances:
+
+{% for app_name in datadog.integrations.gunicorn.app_names %}
+
+  - proc_name: {{ app_name }}
+
+{% endfor %}
