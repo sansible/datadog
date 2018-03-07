@@ -6,6 +6,7 @@
   roles:
     - role: sansible.datadog
       datadog:
+        autostart_agent: no
         tags:
           - role:some_app
         integrations:
@@ -26,14 +27,3 @@
               name: "Dummy test"
               port: "80"
           zk: { }
-
-  post_tasks:
-    - name: Datadog should be running
-      become: yes
-      service:
-        name: datadog-agent
-        state: started
-      register: datadog_agent_start_check
-      failed_when: datadog_agent_start_check.changed
-      tags:
-        - assert

@@ -3,7 +3,7 @@
 - name: Ensures Datadog PGP key is known to the server
   become: yes
   apt_key:
-    id: C7A7DA52
+    id: 382E94DE
     keyserver: hkp://keyserver.ubuntu.com:80
     state: present
 
