@@ -10,24 +10,9 @@ Develop: [![Build Status](https://travis-ci.org/sansible/datadog.svg?branch=deve
 
 This roles installs the Datadog agent.
 
-The agent service is intentionally disabled on bootup; during boot a machine will most likely
-consume a high amount of resources whilst the OS and all of it's services start which will trip any
-CPU or Memory usage alarms erroneously.
-
-
-
-
-## ansible.cfg
-
-This role is designed to work with merge "hash_behaviour". Make sure your
-ansible.cfg contains these settings
-
-```INI
-[defaults]
-hash_behaviour = merge
-```
-
-
+The agent service is intentionally disabled on bootup; during boot a machine
+will most likelyconsume a high amount of resourc es whilst the OS and all of
+its services start which will trip any CPU or Memory usage alarms erroneously.
 
 
 ## Installation and Dependencies
@@ -37,7 +22,7 @@ To install run `ansible-galaxy install sansible.datadog` or add this to your
 
 ```YAML
 - name: sansible.datadog
-  version: v1.1
+  version: v2.0
 ```
 
 and run `ansible-galaxy install -p ./roles -r roles.yml`
@@ -49,7 +34,7 @@ and run `ansible-galaxy install -p ./roles -r roles.yml`
 
 This role uses one tag: **build**
 
-* `build` - Installs Datadog and all it's dependencies.
+* `build` - Installs Datadog and all its dependencies.
 * `configure` - Configures datadog and install integrations
 
 
@@ -57,26 +42,26 @@ This role uses one tag: **build**
 
 ## Integrations
 
-The `datadog/templates/conf.d` directory contains the implemented integrations. The majority of them are self explanatory.
+The `datadog/templates/conf.d` directory contains the implemented integrations.
+The majority of them are self explanatory.
 
 ### Gunicorn
 
-For Gunicorn integration you need to supply a list of app names to be monitored,
-please see [https://docs.datadoghq.com/integrations/gunicorn/]() for more
-information on how to setup DataDog and Gunicorn.
+For Gunicorn integration you need to supply a list of app names to be
+monitored, please see [https://docs.datadoghq.com/integrations/gunicorn/]()
+for more information on how to setup DataDog and Gunicorn.
 
 ```
 roles:
   - role: sansible.datadog
-    datadog:
-      integrations:
-        gunicorn:
-          app_names:
-            - my_app
-            - another_app
-      tags:
-        - my_app
-        - role:my_app
+    sansible_datadog_integrations:
+      gunicorn:
+        app_names:
+          - my_app
+          - another_app
+    sansible_datadog_tags:
+      - my_app
+      - role:my_app
 ```
 
 ### TCP Check
@@ -86,24 +71,21 @@ Sample data structure for TCP Check integration.
 ```
 roles:
   - role: sansible.datadog
-    datadog:
-      integrations:
-        tcp_check:
-          - endpoint: "my.domain.com"
-            name: "TCP Check for my.domain.com"
-            port: "443"
-          - endpoint: "your.domain.com"
-            name: "TCP Check for your.domain.com"
-            port: "80"
-            timeout: 2
-            collect_response_time: "false"
-            min_collection_interval: 60
-      tags:
+    sansible_datadog_integrations:
+      tcp_check:
+        - endpoint: "my.domain.com"
+          name: "TCP Check for my.domain.com"
+          port: "443"
+        - endpoint: "your.domain.com"
+          name: "TCP Check for your.domain.com"
+          port: "80"
+          timeout: 2
+          collect_response_time: "false"
+          min_collection_interval: 60
+      sansible_datadog_tags:
         - some_app
         - role:some_app
 ```
-
-
 
 
 ## Examples
@@ -111,7 +93,7 @@ roles:
 To install:
 
 ```YAML
-- name: Install and configure Datadog
+- name: Install and Configure Datadog
   hosts: "somehost"
 
   roles:
@@ -121,29 +103,27 @@ To install:
 Setup Datadog with some integrations and tags:
 
 ```YAML
-- name: Install and configure Datadog
+- name: Install and Configure Datadog
   hosts: "somehost"
 
   roles:
     - role: sansible.datadog
-      datadog:
-        integrations:
-          php_fpm: { }
-          nginx: { }
-        tags:
-          - some_app
-          - role:some_app
+      sansible_datadog_integrations:
+        php_fpm: {}
+        nginx: {}
+      sansible_datadog_tags:
+        - some_app
+        - role:some_app
 ```
 
-You can disable the agent completely if desired, this can be used to build images
-that have DD installed with the option turn DD off in certain environments where
-monitoring is not needed (eg. dev or scratch environments):
+You can disable the agent completely if desired, this can be used to build
+images that have DD installed with the option turn DD off in certain
+environments where monitoring is not needed (eg. dev or scratch environments):
 
 ```YAML
 # Environment var file eg. vars/dev/vars.yml
 
-datadog:
-  enabled: no
+sansible_datadog_enabled: no
 ```
 
 ```YAML
@@ -157,14 +137,14 @@ datadog:
     - role: sansible.datadog
 ```
 
-**Note** This behaviour requires hash_behaviour to be set to merge.
+**Note** This behaviour requires `hash_behaviour` to be set to `merge`.
 
-By default this role will start the DD agent in the [tasks/configure.yml] task file,
-this behaviour can be disabled however if you wish to start the agent within
-another role:
+By default this role will start the DD agent in the [tasks/configure.yml] task
+file, this behaviour can be disabled however if you wish to start the agent
+within another role:
 
 ```YAML
-- name: Install and configure Datadog
+- name: Install and Configure Datadog
   hosts: "somehost"
 
   vars_files:
@@ -172,8 +152,7 @@ another role:
 
   roles:
     - role: sansible.datadog
-      datadog:
-        autostart_agent: no
+      sansible_datadog_autostart_agent: no
 
     # The task of this role will be be to start the DD agent service
     role: my_service_role
@@ -184,13 +163,12 @@ Using .default_tags to set global tags, these get blended with .tags:
 ```YAML
 # Environment var file eg. vars/dev/vars.yml
 
-datadog:
-  default_tags:
-    - environment:dev
+sansible_datadog_default_tags:
+  - environment:dev
 ```
 
 ```YAML
-- name: Install and configure Datadog
+- name: Install and Configure Datadog
   hosts: "somehost"
 
   vars_files:
@@ -198,13 +176,12 @@ datadog:
 
   roles:
     - role: sansible.datadog
-      datadog:
-        tags:
-          - some_app
-          - role:some_app
+      sansible_datadog_tags:
+        - some_app
+        - role:some_app
 ```
 
-**Note** This behaviour requires hash_behaviour to be set to merge.
+**Note** This behaviour requires `hash_behaviour` to be set to `merge`.
 
 This will result in the following tags:
 
@@ -217,11 +194,10 @@ This will result in the following tags:
 Disable Datadog service (useful for disabling in some environments):
 
 ```YAML
-- name: Install and configure Datadog
+- name: Install and Configure Datadog
   hosts: "somehost"
 
   roles:
     - role: sansible.datadog
-      datadog:
-        enabled: false
+      sansible_datadog_enabled: false
 ```

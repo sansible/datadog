@@ -3,7 +3,7 @@
 init_config:
 
 instances:
-{% for i in datadog.integrations.tcp_check %}
+{% for i in sansible_datadog_integrations.tcp_check %}
 
   - name: {{ i.name }}
     host: {{ i.endpoint }}
