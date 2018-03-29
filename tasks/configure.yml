@@ -14,7 +14,7 @@
     src: "conf.d/{{ item.key }}.yaml.j2"
     dest: "/etc/dd-agent/conf.d/{{ item.key }}.yaml"
     owner: dd-agent
-  with_dict: "{{ datadog.integrations }}"
+  with_dict: "{{ sansible_datadog_integrations }}"
   notify:
     - restart datadog
 
@@ -24,7 +24,7 @@
     enabled: true
     name: datadog-agent
     state: started
-  when: datadog.autostart_agent
+  when: sansible_datadog_autostart_agent
 
 - name: Change Datadog Upstart Runlevel - Create Symlinks
   become: yes

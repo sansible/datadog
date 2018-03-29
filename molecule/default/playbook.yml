@@ -1,0 +1,28 @@
+---
+
+- name: Converge
+  hosts: all
+
+  roles:
+    - role: datadog
+      sansible_datadog_autostart_agent: no
+      sansible_datadog_tags:
+        - role:some_app
+      sansible_datadog_integrations:
+        elastic: {}
+        go_expvar:
+          metrics:
+            - NumGoroutine
+            - HTTPRequestPerSecond
+        gunicorn:
+          app_names:
+            - some_app
+        kafka: {}
+        php_fpm: {}
+        nginx: {}
+        network: {}
+        tcp_check:
+          - endpoint: "somehost.com"
+            name: "Dummy test"
+            port: "80"
+        zk: {}

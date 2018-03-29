@@ -1,4 +1,4 @@
 init_config:
 
 instances:
-  - url: {{ datadog.integrations.elastic.url | default('http://localhost:9200') }}
+  - url: {{ sansible_datadog_integrations.elastic.url | default('http://localhost:9200') }}
