@@ -3,6 +3,13 @@
 - name: Converge
   hosts: all
 
+  pre_tasks:
+    - name: Install GPG
+      become: yes
+      apt:
+        name: gpg
+      when: ansible_distribution_release == 'bionic'
+
   roles:
     - role: datadog
       sansible_datadog_autostart_agent: no

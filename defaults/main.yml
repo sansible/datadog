@@ -7,7 +7,7 @@ sansible_datadog_collect_instance_metadata: ~
 sansible_datadog_dd_url: http://app.datadoghq.com/
 sansible_datadog_default_tags: []
 sansible_datadog_enabled: yes
-sansible_datadog_hostname: ~
+sansible_datadog_hostname: "{{ ansible_hostname }}"
 sansible_datadog_integrations: {}
 sansible_datadog_socket: /opt/datadog-agent/run/datadog-supervisor.sock
 sansible_datadog_tags: []
