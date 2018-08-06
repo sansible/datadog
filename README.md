@@ -45,13 +45,32 @@ This role uses one tag: **build**
 The `datadog/templates/conf.d` directory contains the implemented integrations.
 The majority of them are self explanatory.
 
+### DNS Check
+
+Sample data structure for DNS Check integration:
+
+```YAML
+roles:
+  - role: sansible.datadog
+    sansible_datadog_integrations:
+      dns_check:
+        default_timeout: 1
+        checks:
+          - name: "Some Domain"
+            hostname: "some.domain.com"
+            nameserver: "127.0.0.1"
+          - name: "Some Other Domain"
+            hostname: "some.other.domain.com"
+            nameserver: "10.1.1.2"
+```
+
 ### Gunicorn
 
 For Gunicorn integration you need to supply a list of app names to be
 monitored, please see [https://docs.datadoghq.com/integrations/gunicorn/]()
 for more information on how to setup DataDog and Gunicorn.
 
-```
+```YAML
 roles:
   - role: sansible.datadog
     sansible_datadog_integrations:
@@ -68,7 +87,7 @@ roles:
 
 Sample data structure for TCP Check integration.
 
-```
+```YAML
 roles:
   - role: sansible.datadog
     sansible_datadog_integrations:

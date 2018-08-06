@@ -16,7 +16,13 @@
       sansible_datadog_tags:
         - role:some_app
       sansible_datadog_integrations:
+        dns_check:
+          checks:
+            - name: Check Test
+              hostname: google.com
+              nameserver: 8.8.8.8
         elastic: {}
+        haproxy: {}
         go_expvar:
           metrics:
             - NumGoroutine
