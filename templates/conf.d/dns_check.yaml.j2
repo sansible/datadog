@@ -1,0 +1,17 @@
+---
+
+init_config:
+    default_timeout: {{ sansible_datadog_integrations.dns_check.default_timeout | default(1) }}
+
+instances:
+
+{% for check in sansible_datadog_integrations.dns_check.checks %}
+
+    - name: {{ check.name }}
+      hostname: {{ check.hostname }}
+      nameserver: {{ check.nameserver }}
+      nameserver_port: {{ check.nameserver_port | default('53') }}
+      record_type: {{ check.record_type | default('A') }}
+      timeout: {{ check.timeout | default('1') }}
+
+{% endfor %}

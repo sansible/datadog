@@ -1,0 +1,7 @@
+---
+
+init_config:
+
+instances:
+  - url: {{ sansible_datadog_integrations.haproxy.url | default('http://localhost/admin?stats') }}
+    collate_status_tags_per_host: True
