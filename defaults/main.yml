@@ -1,6 +1,9 @@
 ---
 
 sansible_datadog_api_key: changeme
+sansible_datadog_apt_key_id: 382E94DE
+sansible_datadog_apt_keyserver: keyserver.ubuntu.com
+sansible_datadog_apt_repo: deb http://apt.datadoghq.com/ stable main
 sansible_datadog_autostart_agent: yes
 sansible_datadog_collect_ec2_tags: ~
 sansible_datadog_collect_instance_metadata: ~

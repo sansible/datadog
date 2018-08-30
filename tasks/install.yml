@@ -1,16 +1,22 @@
 ---
 
-- name: Ensures Datadog PGP key is known to the server
+- name: Download Datadog PGP key (works with Bionic behind a proxy)
+  get_url:
+    dest: /usr/local/src/datadog.asc
+    mode: 0644
+    url: "https://{{ sansible_datadog_apt_keyserver }}/pks/lookup?op=get&search=0x{{ sansible_datadog_apt_key_id }}"
+
+- name: Ensures Datadog PGP key is known
   become: yes
   apt_key:
-    id: 382E94DE
-    keyserver: hkp://keyserver.ubuntu.com:80
+    file: /usr/local/src/datadog.asc
+    id: "{{ sansible_datadog_apt_key_id }}"
     state: present
 
 - name: Add Datadog repo
   become: yes
   apt_repository:
-    repo: deb http://apt.datadoghq.com/ stable main
+    repo: "{{ sansible_datadog_apt_repo }}"
     state: present
     update_cache: yes
 
