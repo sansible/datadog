@@ -1,6 +1,7 @@
 ---
 
 - name: Download Datadog PGP key (works with Bionic behind a proxy)
+  become: yes
   get_url:
     dest: /usr/local/src/datadog.asc
     mode: 0644
